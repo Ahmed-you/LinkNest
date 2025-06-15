@@ -1,7 +1,7 @@
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
-import connection from "./connection.js"; 
+import connection from "./connection.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
