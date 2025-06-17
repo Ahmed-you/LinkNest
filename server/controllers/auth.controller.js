@@ -80,6 +80,9 @@ export const loginUser = (req, res) => {
     });
 };
 
+// login a user via google
+
+
 // Log Out User
 export const logoutUser = (req, res) => {
   res.clearCookie("token", { httpOnly: true });
