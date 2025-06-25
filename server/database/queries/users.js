@@ -5,7 +5,7 @@ export const getUsers = () => {
   return pool.query("SELECT * FROM users;");
 };
 
-// Get a selected user by his Emile
+// Get a selected user by his Email
 export const getUser = (userEmail) => {
   const query = "SELECT * FROM users WHERE email = $1;";
   return pool.query(query, [userEmail]);
@@ -14,7 +14,7 @@ export const getUser = (userEmail) => {
 // Get a selected user by his Id
 export const getUserById = (user_id) => {
   const query = "SELECT * FROM users WHERE id = $1;";
-  return pool.query(query, [user_id]);
+  return pool.query(query, [user_id]).then(({ rows }) => rows[0]);
 };
 
 // Get a selected user by his google_Id

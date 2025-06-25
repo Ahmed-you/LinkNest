@@ -19,8 +19,8 @@ const signJWT = (payload) => {
 export const registerUser = ({ username, email, password }) => {
   return usersQueries
     .getUser(email)
-    .then((result) => {
-      if (result.rows.length > 0) {
+    .then((userResult) => {
+      if (userResult.rows.length > 0) {
         throw new Error("Email is already registered.");
       }
       return bcrypt.hash(password, 10);
@@ -46,28 +46,30 @@ export const registerUser = ({ username, email, password }) => {
 };
 
 export const loginUser = ({ email, password }) => {
-  return usersQueries.getUser(email).then((result) => {
-    if (result.rows.length === 0) {
+  return usersQueries.getUser(email).then((userResult) => {
+    if (userResult.rows.length === 0) {
       throw new Error("User not found.");
     }
-    const user = result.rows[0];
 
-    return bcrypt
-      .compare(password, result.rows[0].password_hash)
-      .then((isMatch) => {
-        if (!isMatch) {
-          throw new Error("Incorrect password.");
-        }
+    const user = userResult.rows[0];
 
-        return signJWT({ id: user.id, email: user.email }).then((token) => {
-          const safeUser = {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-          };
+    if (!user.password_hash) {
+      throw new Error("Invalid user data.");
+    }
 
-          return { token, user: safeUser };
-        });
+    return bcrypt.compare(password, user.password_hash).then((isMatch) => {
+      if (!isMatch) {
+        throw new Error("Incorrect password.");
+      }
+
+      return signJWT({ id: user.id, email: user.email }).then((token) => {
+        const safeUser = {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+        };
+        return { token, user: safeUser };
       });
+    });
   });
 };

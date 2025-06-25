@@ -18,7 +18,7 @@ export const getLinksByCategory = (category_id, user_id) => {
     WHERE category_id = $1 AND user_id = $2
     ORDER BY created_at DESC;
   `;
-  return pool.query(query, [category_id, user_id]);
+  return pool.query(query, [category_id, user_id]).then(({ rows }) => rows);
 };
 
 // Get a single link by id (for edit screen for example)

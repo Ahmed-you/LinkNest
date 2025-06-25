@@ -1,4 +1,4 @@
-import pool from "../config/connection";
+import pool from "../config/connection.js";
 
 // Create category
 export const createCategory = ({ user_id, name, icon, color }) => {
@@ -12,12 +12,14 @@ export const createCategory = ({ user_id, name, icon, color }) => {
 
 // Get all categories from this user
 export const getCategories = (user_id) => {
-  return pool.query(
-    `   SELECT * FROM categories 
+  return pool
+    .query(
+      `   SELECT * FROM categories 
         WHERE user_id = $1
         ORDER BY created_at DESC;`,
-    [user_id]
-  );
+      [user_id]
+    )
+    .then(({ rows }) => rows);
 };
 
 // Get a selected category from this user
@@ -25,7 +27,7 @@ export const getCategoryById = (category_id, user_id) => {
   const query = `
        SELECT * FROM categories
        WHERE id = $1 AND user_id = $2;`;
-  return pool.query(query, [category_id, user_id]);
+  return pool.query(query, [category_id, user_id]).then(({ rows }) => rows[0]);
 };
 
 // Edit a selected category from this user

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export const verifyJWT = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies.token || req.headers["authorization"];
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: No token provided." });
@@ -10,7 +10,7 @@ export const verifyJWT = (req, res, next) => {
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       console.error("JWT verify error:", err);
-      return res.status(401).json({ error: "Unauthorized: Invalid token." });
+      return res.status(403).json({ error: "Unauthorized: Invalid token." });
     }
 
     req.user = decoded;

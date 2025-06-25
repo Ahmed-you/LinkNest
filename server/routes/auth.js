@@ -21,7 +21,7 @@ router.get(
     session: false, // important for JWT-based login
   }),
   (req, res) => {
-    // ✅ req.user is the user object from the passport strategy
+    // req.user is the user object from the passport strategy
     const user = req.user;
 
     const payload = { id: user.id, email: user.email };
@@ -36,7 +36,7 @@ router.get(
           return res.redirect("/login?error=token");
         }
 
-        // ✅ Set token as cookie
+        //  Set token as cookie
         res.cookie("token", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
@@ -44,11 +44,15 @@ router.get(
           maxAge: 24 * 60 * 60 * 1000, // 1 day
         });
 
-        // ✅ Redirect to dashboard (or frontend route)
+        //  Redirect to dashboard (or frontend route)
         res.redirect("/dashboard");
       }
     );
   }
 );
+
+router.get("/csrf-token", (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
 
 export default router;
