@@ -1,11 +1,11 @@
 import pool from "../config/connection.js";
 
 // Create link
-export const createLink = ({ user_id, category_id, title, url }) => {
-  const values = [user_id, category_id, title, url];
+export const createLink = ({ user_id, category_id, title, url, tags = [] }) => {
+  const values = [user_id, category_id, title, url, tags];
   const query = `
-    INSERT INTO links (user_id, category_id, title, url)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO links (user_id, category_id, title, url,tags)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
   `;
   return pool.query(query, values);
@@ -31,19 +31,19 @@ export const getLinkById = (link_id, user_id) => {
 };
 
 // Edit link
-export const editLink = ({ link_id, user_id, title, url }) => {
-  const values = [title, url, link_id, user_id];
+export const updateLink = ({ link_id, user_id, title, url, tags = [] }) => {
+  const values = [title, url, tags, link_id, user_id];
   const query = `
     UPDATE links
-    SET title = $1, url = $2, 
-    WHERE id = $3 AND user_id = $4
+    SET title = $1, url = $2, tags=$3
+    WHERE id = $4 AND user_id = $5
     RETURNING *;
   `;
   return pool.query(query, values);
 };
 
 // Delete link
-export const deleteLink = (link_id, user_id) => {
+export const deleteLink = ({ link_id, user_id }) => {
   const query = `
     DELETE FROM links
     WHERE id = $1 AND user_id = $2;

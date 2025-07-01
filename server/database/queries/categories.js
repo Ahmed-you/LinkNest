@@ -31,7 +31,7 @@ export const getCategoryById = (category_id, user_id) => {
 };
 
 // Edit a selected category from this user
-export const editCategory = ({ category_id, user_id, name, icon, color }) => {
+export const updateCategory = ({ category_id, user_id, name, icon, color }) => {
   const values = [name, icon, color, category_id, user_id];
   const query = `
        UPDATE categories
