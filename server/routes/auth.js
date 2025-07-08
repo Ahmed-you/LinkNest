@@ -18,11 +18,11 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login",
-    session: false, // important for JWT-based login
+    session: false,
   }),
   (req, res) => {
-    // req.user is the user object from the passport strategy
     const user = req.user;
+    console.log(user);
 
     const payload = { id: user.id, email: user.email };
 

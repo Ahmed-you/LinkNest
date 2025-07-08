@@ -24,12 +24,17 @@ export const getUserByGoogleId = (google_id) => {
 };
 
 // Create A Google user
-export const createGoogleUser = ({ username, email, google_id }) => {
+export const createGoogleUser = ({
+  username,
+  email,
+  google_id,
+  profile_pic,
+}) => {
   const query = `
-    INSERT INTO users (username, email, google_id)
-    VALUES ($1, $2, $3) RETURNING *;
+    INSERT INTO users (username, email, google_id, profile_pic)
+    VALUES ($1, $2, $3,$4) RETURNING *;
   `;
-  const values = [username, email, google_id];
+  const values = [username, email, google_id, profile_pic];
   return pool.query(query, values);
 };
 
