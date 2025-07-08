@@ -1,7 +1,7 @@
 import express from "express";
 import authRouter from "./auth.js";
 import dashboardRouter from "./dashboard.js";
-import categoriesRouter from "./categores.js";
+import categoriesRouter from "./categories.js";
 import linksRouter from "./links.js";
 const router = express.Router();
 
