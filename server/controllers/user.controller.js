@@ -4,7 +4,6 @@ import * as linksQueries from "../database/queries/links.js";
 
 export const getDashboard = (req, res) => {
   const userId = req.user.id;
-  console.log(userId);
   if (!req.user.id) {
     throw new Error("Un Authorized User ");
   }

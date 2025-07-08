@@ -108,7 +108,6 @@ export const updateLink = (req, res) => {
 export const deleteLink = (req, res) => {
   const user_id = req.user.id;
   const link_id = Number(req.params.id);
-  console.log(typeof link_id);
 
   if (!user_id || typeof user_id !== "number") {
     return res.status(400).json({
